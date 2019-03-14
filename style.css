@@ -1,0 +1,38 @@
+.container { 
+	padding-top: 20px;
+	text-align: center
+}
+
+input[type=text] {
+  width: 100%;
+  padding: 8px 20px;
+  margin-bottom: 50px;
+	margin-top: 20px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  outline: none;
+}
+
+input[type=text]:focus {
+	border: 2px solid #87CEEB;
+	border-radius: 5px;
+}
+
+.wrapper {
+	width: 400px;
+	margin: 20px auto 0;
+	text-align: center;
+  }
+
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+table, th, td {
+	border: 1px solid #ccc;
+	padding: 8px;
+}
