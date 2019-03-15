@@ -36,3 +36,7 @@ table, th, td {
 	border: 1px solid #ccc;
 	padding: 8px;
 }
+
+.invalid {
+	color: red;
+}
