@@ -1,4 +1,5 @@
 var numberRamdon = Math.round(Math.random() * (10000 - 1000) + 1000); //falta incluir que el número sea diferentes dígitos.
+alert(numberRamdon)
 numberRamdon = numberRamdon.toString() //Convierte a string el número
 $('#number').keypress(function(event){
 	var numberUser = $(this).val();
@@ -12,10 +13,20 @@ $('#number').keypress(function(event){
 			// logica
 			numberRamdonArray = numberRamdon.split("");
 			numberUserArray = numberUser.split("");
-		
+			var counterPicas = 0
+			var counterFijas = 0  
+			$.each(numberRamdonArray, function(iRandom, vRamdon){
+				$.each(numberUserArray, function(iUser,vUser){
+					if((iRandom === iUser) && (vRamdon === vUser)){
+						counterFijas = counterFijas + 1
+					} else if (vRamdon === vUser){
+						counterPicas = counterPicas + 1
+					};
+				});
+			})
+			alert(counterFijas+":"+counterPicas);
 
-
-				$('tbody').append('<tr><td>'+ numberUser +'<td></td><td></td></td></tr>')
+				$('tbody').append('<tr><td>'+ numberUser +'</td><td>' + counterPicas + '</td><td>' + counterFijas + '</td></tr>')
 				$('span').removeClass('invalid');
 				$('input').removeClass('invalid-input');
 				$(this).val('');			
