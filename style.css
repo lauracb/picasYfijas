@@ -40,3 +40,7 @@ table, th, td {
 .invalid {
 	color: red;
 }
+
+.invalid-input{
+  background-color: lightcoral;
+}
