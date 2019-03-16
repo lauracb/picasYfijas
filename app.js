@@ -74,10 +74,7 @@ function sinDuplicados(array){
 
 //Función que agrega filas y remueve clases de inválido
 function addRow(numberUser, counterPicas, counterFijas){
-	$('tbody').prepend('<tr><td>'+ numberUser 
-										+'</td><td>' + counterPicas 
-										+ '</td><td>' + counterFijas 
-										+ '</td></tr>');
+	$('tbody').prepend('<tr><td>'+ numberUser +'</td><td>' + counterPicas + '</td><td>' + counterFijas + '</td></tr>');
 	$('span').removeClass('invalid');
 	$('input').removeClass('invalid-input');
 };
