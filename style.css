@@ -61,7 +61,8 @@ table, th, td {
 	height: 100%;
 	top: 40%;
 	padding: 20px;
-	margin: -250px -8px;
+  margin: -250px -8px;
+  position: fixed;
 }
 
 .won span {
