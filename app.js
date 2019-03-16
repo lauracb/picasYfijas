@@ -1,67 +1,96 @@
-// Variable
-var randomNumber = randomf(); 
+// JUEGO PICAS Y FIJAS
 
-// Función para generar el número random no repetido
-function randomf(){
-	var numberRamdon = Math.round(Math.random() * (10000 - 1000) + 1000); 
-	numberRamdon = numberRamdon.toString() //Convierte a string el número
-	var numberRamdonArray = numberRamdon.split(""); //Convierte a array el número
-	var numberRamdonA = sinDuplicados(numberRamdonArray);
-	if(numberRamdonA.length === 4){
-		return numberRamdonA
-	} else {
-		return randomf();
-	};
-};
+// Declaración de Variables
+var counterFijas;
+var counterPicas;
+var numberUser;
 
-// Función para eliminar duplicados del array
-function sinDuplicados(array){
-	var noDuplicados = [];
-	$.each(array, function(indice, value){
-		if($.inArray(value, noDuplicados ) === -1){
-			noDuplicados.push(value)
+// Muestra el número random del juego nuevo en consola
+var randomNumber = generatorRandomNum(); 
+console.log(randomNumber.join('')); 
+
+// Evento jquery que se escucha al dar 'click' en el botón para jugar nuevamente
+$('.close').on('click', function(){
+	$('.won').hide();
+	location.reload();
+});
+
+// Evento jquery que se escucha al ingresar número y presionar la tecla enter
+$('#number').keypress(function(event){
+	numberUser = $(this).val();
+	exp = /^[0-9]+(?:\[0-9]+)?$/;
+	if(event.which == 13){ 
+		event.preventDefault();
+		var numberUserArray = numberUser.split("");
+		var userNumNoRepeat = sinDuplicados(numberUserArray);
+		if((exp.test(numberUser)) && (userNumNoRepeat.length === 4)){ 
+			logicGame(userNumNoRepeat);		
+			$(this).val('');		
+		} else {
+			validation();			
 		};
-	});
-	return noDuplicados;
-};
+	};   
+});
 
-// Lógica del juego
+// Lógica del juego: compara los índices y el valor de los arreglos para sumar picas o fijas
 function logicGame(numberUser){
-	var counterPicas = 0
-	var counterFijas = 0  
+	counterPicas = 0;
+	counterFijas = 0 ; 
 	$.each(randomNumber, function(iRandom, vRamdon){
 		$.each(numberUser, function(iUser,vUser){
 			if((iRandom === iUser) && (vRamdon === vUser)){
-				counterFijas = counterFijas + 1
+				counterFijas++;
 			} else if (vRamdon === vUser){
-				counterPicas = counterPicas + 1
+				counterPicas++;
 			};
 		});
 	});
 	numberUser = numberUser.join('');
-	// Agrega filas
-	$('tbody').append('<tr><td>'+ numberUser +'</td><td>' + counterPicas + '</td><td>' + counterFijas + '</td></tr>')
+	addRow(numberUser, counterPicas, counterFijas);
+	winner(numberUser,randomNumber);
+};
+
+// Función para generar el número aleatorio no repetido
+function generatorRandomNum(){
+	var randomNum = (Math.round(Math.random() * (10000 - 1000) + 1000)).toString().split(""); 
+	var numberNoRepeted = sinDuplicados(randomNum);
+	if(numberNoRepeted.length === 4){
+		return numberNoRepeted;
+	} else {
+		return generatorRandomNum();
+	};
+};
+
+// Función para eliminar duplicados de un array
+function sinDuplicados(array){
+	var arraySinDuplicado = [];
+	$.each(array, function(indice, value){
+		if($.inArray(value, arraySinDuplicado ) === -1){
+			arraySinDuplicado.push(value);
+		};
+	});
+	return arraySinDuplicado;
+};
+
+//Función que agrega filas y remueve clases de inválido
+function addRow(numberUser, counterPicas, counterFijas){
+	$('tbody').prepend('<tr><td>'+ numberUser 
+										+'</td><td>' + counterPicas 
+										+ '</td><td>' + counterFijas 
+										+ '</td></tr>');
 	$('span').removeClass('invalid');
 	$('input').removeClass('invalid-input');
 };
 
-// Evento jquery
-$('#number').keypress(function(event){
-	var numberUser = $(this).val();
-	var exp = /^[0-9]+(?:\[0-9]+)?$/; // expresión para validar número entero
-	var key = event.which;
-	if(key == 13){ 
-		event.preventDefault();
-		var numberUserArray = numberUser.split("");
-		var numberUserA = sinDuplicados(numberUserArray);
-		if((exp.test(numberUser)) && (numberUserA.length === 4)){ 
-			// logica
-			logicGame(numberUserA);		
-			$(this).val('');		
-		} else {
-			$('span').addClass('invalid');
-			$('input').addClass('invalid-input');
-			$(this).val('');
-		};
-	};   
-});
+//Función para agregar clases de inválido
+function validation(){
+	$('span').addClass('invalid');
+	$('input').addClass('invalid-input');
+};
+
+// Función que determina si el usuario ha ganado 
+function winner(userN, randomN){
+	if(userN === randomN.join('')){
+		$('.won').show().css({ "display": "flex" });
+	};
+};
